@@ -1,0 +1,25 @@
+{
+  "name": "webgl-boids",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "browserify index.js -o bundle.js -t glslify",
+    "watch": "watchify index.js -o bundle.js -t glslify"
+  },
+  "author": "Nikolai Janakiev",
+  "license": "MIT",
+  "devDependencies": {
+    "browserify": "^14.3.0",
+    "ccapture.js": "^1.0.6",
+    "glslify": "^6.0.2",
+    "watchify": "^3.9.0"
+  },
+  "dependencies": {
+    "dat.gui": "^0.6.1",
+    "glsl-easings": "^1.0.0",
+    "glsl-face-normal": "^1.0.2",
+    "glsl-pi": "^1.0.0",
+    "three-orbit-controls": "^82.1.0"
+  }
+}
