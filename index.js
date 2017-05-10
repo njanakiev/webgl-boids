@@ -5,8 +5,8 @@ const CCapture = require('ccapture.js');
 
 
 // Settings
-var width  = 800;
-var height = 600;
+var width;
+var height;
 var framerate = 20;
 var saveFrames = false;
 var frames = 60;
@@ -24,6 +24,9 @@ init();
 render();
 
 function init() {
+	width = window.innerWidth;
+	height = window.innerHeight;
+
 	// Renderer and Canvas
 	renderer = new THREE.WebGLRenderer({antialias: true});
 	renderer.setSize( width, height );
@@ -41,6 +44,8 @@ function init() {
 
 	setupGui();
 	createObject();
+
+	window.addEventListener( 'resize', onWindowResize, false );
 };
 
 function render() {
@@ -107,7 +112,7 @@ function setupGui() {
 			frame = 0;
 			saveFrames = true;
 		},
-		resolution: "800x600"
+		resolution: "Fullscreen"
 	};
 	var h, gui = new dat.GUI();
 
@@ -119,13 +124,14 @@ function setupGui() {
 	
 	h = gui.addFolder("Capture");
 	h.add(guiController, "capture").name("Capture Animation");
-	h.add(guiController, "resolution", ["600x600", "800x600", "640x360", "720x405", "768x423"]).onChange(function(){
+	h.add(guiController, "resolution", ["Fullscreen", "600x600", "800x600", "640x360", "720x405", "768x423"]).onChange(function(){
 		switch(guiController.resolution) {
 			case "600x600": width = 600; height = 600; break;
 			case "800x600": width = 800; height = 600; break;
 			case "640x360": width = 640; height = 360; break;
 			case "720x405": width = 720; height = 405; break;
 			case "768x423": width = 768; height = 423; break;
+			case "Fullscreen": width = window.innerWidth; height = window.innerHeight; break;
 			default: console.log("missing resolution : " + guiController.resolution); return;
 		};
 
@@ -136,3 +142,11 @@ function setupGui() {
 	});
 };
 
+function onWindowResize( event ) {
+	if(guiController.resolution === "Fullscreen"){
+		renderer.setPixelRatio(window.devicePixelRatio);
+		renderer.setSize( window.innerWidth, window.innerHeight );
+		camera.aspect = window.innerWidth / window.innerHeight;
+    	camera.updateProjectionMatrix();
+	}
+};
